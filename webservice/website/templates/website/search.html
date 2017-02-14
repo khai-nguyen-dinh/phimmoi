@@ -1,0 +1,124 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{% url 'website:index' %}" data-toggle="tooltip">Home</a></li>
+        <li class="active">Search</li>
+    </ul>
+    <div class="text-center"><img src="{% static 'images/re_search.png' %}" width="350" height="200"></div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form role="form" action="{% url 'website:result' %}" method="post">
+                <div class="form-group">
+                    {% csrf_token %}
+
+                    <input type="text" class="form-control" name="text" placeholder="Nhập tên phim vô đây ...">
+                    <input style="margin-top: 10px" type="submit" data-toggle="tooltip" class="btn btn-danger btn-lg
+                    btn-block"
+                           value="Search">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for element in list_film %}
+            <div class="col-sm-3">
+
+                <div class="thumbnail">
+                    <img src="{{ element.image }} " class="img-responsive"
+                         style="width: 85%;height: 300px;padding-top: 5%"
+                         alt="Image">
+
+
+                    {% if element.title|length > 50 %}
+                        <div class="text-center" style="padding-top: 5px"><a
+                                href="{{ element.url }}"><p style="font-weight: bold;font-size: 12px"
+                                                            class="label label-success"><span
+                                class="text-uppercase">{{ element.title|slice:":20" }}
+                        ...
+                    </span></p></a></div>
+                    {% else %}
+                        <div class="text-center" style="padding-top: 5px"><a
+                                href="{{ element.url }}"><p style="font-weight: bold;font-size: 12px;" class="label
+                        label-success"
+                        ><span class="text-uppercase">{{ element.title|slice:":20" }}</span></p></a>
+                        </div>
+                    {% endif %}
+
+                    <div style="padding-top: 10px;padding-left: 5%">
+
+                        <span><b>Thời lượng:</b> {{ element.time }}</span></div>
+                    <div style="padding-top: 5px;padding-left: 5%">
+
+                        <b>Chất Lượng: </b><span class="label label-primary">{{ element.quality }}
+
+                            </span>
+                    </div>
+
+                    <div style="padding-top: 5px;padding-left: 5%">
+
+                        <b>IMDB: </b><span class="label label-primary">
+                        {% if element.imdb != '' %}
+                            {{ element.imdb }}
+                        {% else %}
+                            N/A
+                        {% endif %}
+                            </span>
+                    </div>
+                    <div style="padding-top: 5px;padding-left: 5%">
+
+                        <b>Loại: </b><span>
+                                 {% if element.type != '' %}
+                                     {{ element.type }}
+                                 {% else %}
+                                     N/A
+                                 {% endif %}
+                            </span>
+                    </div>
+
+                    <div style="padding-top: 5px;padding-left: 5%">
+
+                        <b>Năm: </b><span>{{ element.year }}
+
+                            </span>
+                    </div>
+
+                    <div style="padding-top: 5px;padding-left: 5%">
+
+                        <b>Nguồn phim: </b><span class="label label-info">{{ element.source }}
+
+                            </span>
+                    </div>
+
+                </div>
+            </div>
+            {% if forloop.counter|divisibleby:4 %}
+                </div>
+                <div class="row">
+            {% endif %}
+
+        {% endfor %}
+        </div>
+
+
+    <div class="text-center">
+        <ul class="pagination">
+            <li>{% if list_film.has_previous %}
+                <a href="?page={{ list_film.previous_page_number }}&q={{ q }}">previous</a>
+            {% endif %}</li>
+            <li class="active"><a href="">Page {{ list_film.number }} of {{ list_film.paginator.num_pages }}</a>
+            </li>
+
+            <li>{% if list_film.has_next %}
+                <a href="?page={{ list_film.next_page_number }}&q={{ q }}">next</a>
+            {% endif %}</li>
+
+        </ul>
+    </div>
+
+
+
+    </div>
+{% endblock %}

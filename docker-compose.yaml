@@ -1,0 +1,61 @@
+version: "2"
+services:
+  scrapy:
+    image: onfta/scrapy:1.0
+    networks:
+      - film-tier
+    volumes:
+      - ./crawl_film/:/crawl_film/
+    hostname: scrapy
+    cpu_shares: 512             # 0.5 CPU
+    mem_limit: 2147483648       # 2048 MB RAM
+    tty: true
+    entrypoint: /crawl_film/scheduler.sh
+    logging:
+      driver: "json-file"
+      options:
+          max-size: "100M"
+          max-file: "3"
+  mysql:
+      image: mysql:5.7
+      # volumes:
+      #     - ./mysql-data/:/var/lib/mysql/
+      #     - ./mysql-data/:/docker-entrypoint-initdb.d/
+      environment:
+          - MYSQL_ROOT_PASSWORD=nguyendinhkhai
+          - MYSQL_USER=film
+          - MYSQL_PASSWORD=nguyendinhkhai
+          - MYSQL_DATABASE=film
+      ports:
+          - "127.0.0.1:3308:3306"
+      networks:
+          - film-tier
+      hostname: mysql
+      cpu_shares: 512
+      mem_limit: 1073741824
+      logging:
+        driver: "json-file"
+        options:
+            max-size: "100M"
+            max-file: "3"
+
+  django:
+      image: django
+      ports:
+          - "127.0.0.1:8000:8000"
+      volumes:
+          - ./webservice/:/webservice/
+      networks:
+          - film-tier
+      hostname: django
+      cpu_shares: 512
+      mem_limit: 1073741824
+      tty: true
+      logging:
+        driver: "json-file"
+        options:
+            max-size: "100M"
+            max-file: "3"
+
+networks:
+  film-tier:
