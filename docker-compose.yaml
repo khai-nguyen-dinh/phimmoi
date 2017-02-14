@@ -40,7 +40,7 @@ services:
             max-file: "3"
 
   django:
-      image: django
+      image: khainguyendinh/django:1.0
       ports:
           - "127.0.0.1:8000:8000"
       volumes:
