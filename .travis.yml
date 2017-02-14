@@ -1,0 +1,20 @@
+languague: python
+python:
+    - 3.5
+    - 2.7
+sudo: required
+env:
+  COMPOSE_VERSION=1.8.1
+before_install:
+- sudo apt-get update
+- wget -qO- https://get.docker.com/ | sh
+- sudo usermod -a -G docker `whoami`
+- sudo wget https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m`
+-O /usr/local/bin/docker-compose
+- sudo chmod +x /usr/local/bin/docker-compose
+notifications:
+  email:
+    recipients:
+      - khainguyen@onfta.com
+    on_success: change
+on_failure: always
