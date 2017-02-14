@@ -10,9 +10,8 @@ before_install:
 - sudo usermod -a -G docker `whoami`
 - sudo wget https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-`uname -s`-`uname -m` -O /usr/local/bin/docker-compose
 - sudo chmod +x /usr/local/bin/docker-compose
-- curl https://bootstrap.pypa.io/get-pip.py | sudo python3
 install:
-- sudo pip3 install flake8
+- sudo pip install flake8
 script:
     flake8 --config=.flake8
 notifications:
