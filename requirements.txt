@@ -1,3 +1,5 @@
 django
 mysqlclient
 django-widget-tweaks
+pillow
+psycopg2
