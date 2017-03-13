@@ -3,3 +3,4 @@ mysqlclient
 django-widget-tweaks
 pillow
 psycopg2
+djangorestframework
