@@ -4,3 +4,5 @@ django-widget-tweaks
 pillow
 psycopg2
 djangorestframework
+selenium
+scrapy
