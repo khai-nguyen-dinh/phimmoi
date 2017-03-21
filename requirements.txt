@@ -6,3 +6,4 @@ psycopg2
 djangorestframework
 selenium
 scrapy
+django-cors-headers
